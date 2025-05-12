@@ -8,7 +8,7 @@ public:
     PidController(float kp, float ki, float kd);
     ~PidController(){};
 
-private:
+public:
     float target_;  // 目标值
     float out_min_; // 输出下限
     float out_max_; // 输出上限

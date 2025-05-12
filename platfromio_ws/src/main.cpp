@@ -7,7 +7,12 @@
 #include "Config.h"
 #include <Esp32PcntEncoder.h>
 #include <PidController.h>
-#include<Kinematics.h>
+#include <Kinematics.h>
+#include <micro_ros_platformio.h>
+#include <rcl/rcl.h>
+#include <rclc/rclc.h>
+#include <rclc/executor.h>
+#include <geometry_msgs/msg/twist.h>
 
 Esp32PcntEncoder encoders[4];    // 编码器
 IMU imu;                         // imu
@@ -20,14 +25,84 @@ int32_t delta_tick[4];    // 两次读取之间的计数器差值
 int64_t last_update_time; // 上一次更新时间
 float current_speeds[4];  // 四个电机的速度
 
-float target_linear_x_speed = 100.0; // 目标x线速度 ms/s
-float target_linear_y_speed = 0.0;  // 目标y线速度 ms/s
-float target_angular_speed = 1.f;   // 目标角速度 rad/s
-float out_speed[4];                 // 电机输出速度
+float target_linear_x_speed = 0.0; // 目标x线速度 ms/s
+float target_linear_y_speed = 0.0; // 目标y线速度 ms/s
+float target_angular_speed = 0.f;  // 目标角速度 rad/s
+float out_speed[4];                // 电机输出速度
+
+float out_wheel_speed[4];
+
+rcl_allocator_t allocator; // 内存分配器，用于动态内存管理
+rclc_support_t support;    // 用于存储时钟，内存分配器和上下文，提供支持
+rclc_executor_t executor;  // 用于执行节点的执行器
+rcl_node_t node;           // 节点
+
+rcl_subscription_t subcriber;      // 订阅者
+geometry_msgs__msg__Twist sub_msg; // 订阅消息
+
+float out_motor_speed[4];
+
+void twist_callback(const void *msg)
+{
+    const geometry_msgs__msg__Twist *twist_msg = (const geometry_msgs__msg__Twist *)msg;
+    kinematics.kinematic_inverse(twist_msg->linear.x * 1000, twist_msg->linear.y * 1000, twist_msg->angular.z,
+                                 pid_controller[0].target_, pid_controller[1].target_,pid_controller[2].target_, pid_controller[3].target_);
+    for (int i = 0; i < 4; i++)
+    {
+        // pid_controller[i].update_target(out_wheel_speed[i]);
+
+        if (pid_controller[i].target_ == 0)
+        {
+            out_motor_speed[i] = 0;
+        }
+        else
+        {
+            // 使用 pid_controller 控制器对电机速度进行 PID 控制
+            out_motor_speed[i] = pid_controller[i].update(pid_controller[i].target_);
+        }
+
+        motor.updateMotorSpeed(i, pid_controller[i].update(out_motor_speed[i]));
+        Serial.printf("speeds1=%fm/s ,speed2=%fm/s ,speed3=%fm/s ,speed4=%fm/s  \n",
+                      out_wheel_speed[0], out_wheel_speed[1], out_wheel_speed[2], out_wheel_speed[3]);
+    }
+}
+
+void micro_ros_task(void *parameter)
+{
+    // 设置传输协议，并延时等待完成
+    IPAddress agent_ip;
+    agent_ip.fromString(AGENT_IP);
+    set_microros_wifi_transports(WIFI_NAME, WIFI_PASSWORD, agent_ip, 8888);
+    delay(2000);
+
+    // 初始化内存分配器
+    allocator = rcl_get_default_allocator();
+
+    // 初始化support
+    rclc_support_init(&support, 0, NULL, &allocator);
+
+    // 初始化节点
+    rclc_node_init_default(&node, "robot_motion_control", "", &support);
+
+    // 初始化执行器
+    unsigned int number_handles = 1;
+    rclc_executor_init(&executor, &support.context, number_handles, &allocator);
+
+    rclc_subscription_init_best_effort(&subcriber,
+                                       &node,
+                                       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
+                                       "/cmd_vel");
+    rclc_executor_add_subscription(&executor, &subcriber, &sub_msg, twist_callback, ON_NEW_DATA);
+
+    // 循环执行器
+    rclc_executor_spin(&executor);
+}
 
 void motor_speed_control()
 {
+
     uint64_t dt = millis() - last_update_time;
+    kinematics.update_motor_speed(millis(), encoders[0].getTicks(), encoders[1].getTicks(), encoders[2].getTicks(), encoders[3].getTicks());
     for (int i = 0; i < 4; i++)
     {
         // 计算编码器差值
@@ -44,7 +119,7 @@ void motor_speed_control()
 
     last_update_time = millis(); // 更新上一次更新时间
 
-    Serial.printf("speeds: 1=%fm/s ,2=%fm/s ,3=%fm/s ,4=%fm/s  \n",
+    Serial.printf("speeds1=%fm/s ,speed2=%fm/s ,speed3=%fm/s ,speed4=%fm/s  \n",
                   current_speeds[0], current_speeds[1], current_speeds[2], current_speeds[3]);
 }
 
@@ -71,13 +146,13 @@ void setup()
         pid_controller[i].out_limit(-100, 100);
     }
 
-    kinematics.set_wheel_distance(216.f,177.f);
-    kinematics.set_motor_params(0,0.1051566);
-    kinematics.set_motor_params(1,0.1051566);
-    kinematics.set_motor_params(2,0.1051566);
-    kinematics.set_motor_params(3,0.1051566);
+    kinematics.set_wheel_distance(216.f, 177.f);
+    kinematics.set_motor_params(0, 0.1051566);
+    kinematics.set_motor_params(1, 0.1051566);
+    kinematics.set_motor_params(2, 0.1051566);
+    kinematics.set_motor_params(3, 0.1051566);
 
-    kinematics.kinematic_inverse(target_linear_x_speed,target_linear_y_speed,target_angular_speed,out_speed[0],out_speed[1],out_speed[2],out_speed[3]);
+    kinematics.kinematic_inverse(target_linear_x_speed, target_linear_y_speed, target_angular_speed, out_speed[0], out_speed[1], out_speed[2], out_speed[3]);
 
     // 设置电机速度
     for (int i = 0; i < 4; i++)
@@ -85,6 +160,9 @@ void setup()
         // mm/s
         pid_controller[i].update_target(out_speed[i]);
     }
+
+    // 创建micro_ros_task
+    xTaskCreate(micro_ros_task, "micro_ros", 10240, NULL, 1, NULL);
 }
 
 void loop()
@@ -92,4 +170,7 @@ void loop()
 
     delay(10);
     motor_speed_control();
+    Serial.printf("x=%f,y=%f,angle=%f\n", kinematics.get_odom().x, kinematics.get_odom().y,
+                  kinematics.get_odom().y,
+                  kinematics.get_odom().yaw);
 }

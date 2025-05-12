@@ -10,6 +10,13 @@
         "initializer_list": "cpp",
         "functional": "cpp",
         "memory": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "cmath": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp",
+        "regex": "cpp",
+        "bitset": "cpp",
+        "set": "cpp"
     }
 }

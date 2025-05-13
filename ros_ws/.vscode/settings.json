@@ -1,0 +1,20 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages",
+        "/home/johan/Dev/graduation_project/ros_ws/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/opt/intel/openvino_2024.2.0/python",
+        "/opt/intel/openvino_2024.2.0/python/python3",
+        ""
+    ],
+    "python.analysis.extraPaths": [
+        "/home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages",
+        "/home/johan/Dev/graduation_project/ros_ws/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/opt/intel/openvino_2024.2.0/python",
+        "/opt/intel/openvino_2024.2.0/python/python3",
+        ""
+    ]
+}

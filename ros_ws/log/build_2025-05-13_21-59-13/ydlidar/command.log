@@ -1,0 +1,6 @@
+Invoking command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/johan/Dev/graduation_project/ros_ws/src/ydlidar_ros2 -DCMAKE_INSTALL_PREFIX=/home/johan/Dev/graduation_project/ros_ws/install/ydlidar
+Invoked command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/johan/Dev/graduation_project/ros_ws/src/ydlidar_ros2 -DCMAKE_INSTALL_PREFIX=/home/johan/Dev/graduation_project/ros_ws/install/ydlidar
+Invoking command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/johan/Dev/graduation_project/ros_ws/build/ydlidar -- -j16 -l16
+Invoked command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/johan/Dev/graduation_project/ros_ws/build/ydlidar -- -j16 -l16
+Invoking command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/johan/Dev/graduation_project/ros_ws/build/ydlidar
+Invoked command in '/home/johan/Dev/graduation_project/ros_ws/build/ydlidar' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/johan/Dev/graduation_project/ros_ws/build/ydlidar

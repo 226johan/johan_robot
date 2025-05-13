@@ -13,6 +13,8 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 #include <geometry_msgs/msg/twist.h>
+#include<nav_msgs/msg/odometry.h>
+#include<micro_ros_utilities/string_utilities.h>
 
 Esp32PcntEncoder encoders[4];    // 编码器
 IMU imu;                         // imu
@@ -39,8 +41,33 @@ rcl_node_t node;           // 节点
 
 rcl_subscription_t subcriber;      // 订阅者
 geometry_msgs__msg__Twist sub_msg; // 订阅消息
+rcl_publisher_t odom_publisher;  //发布者
+nav_msgs__msg__Odometry odom_msg; //里程计消息
+rcl_timer_t timer; //定时器
+
 
 float out_motor_speed[4];
+
+void callback_publisher(rcl_timer_t *timer,int64_t last_call_time){
+    odom_t odom=kinematics.get_odom();
+    int64_t stamp=rmw_uros_epoch_millis();
+    odom_msg.header.stamp.sec=static_cast<int32_t>(stamp/1000); // s
+    odom_msg.header.stamp.nanosec=static_cast<uint32_t>(stamp%1000)*1e6; // ns
+    odom_msg.pose.pose.position.x=odom.x;
+    odom_msg.pose.pose.position.y=odom.y;
+    odom_msg.pose.pose.orientation.w=cos(odom.yaw*0.5);
+    odom_msg.pose.pose.orientation.x=0;
+    odom_msg.pose.pose.orientation.y=0;
+    odom_msg.pose.pose.orientation.z=sin(odom.yaw*0.5);
+    odom_msg.twist.twist.angular.z=odom.angular_speed;
+    odom_msg.twist.twist.linear.x=odom.linear_x_speed;
+
+    if(rcl_publish(&odom_publisher,&odom_msg,NULL)!=RCL_RET_OK){
+        Serial.printf("error: odom publisher failed!\n");
+    }
+}
+
+
 
 void twist_callback(const void *msg)
 {
@@ -85,8 +112,19 @@ void micro_ros_task(void *parameter)
     rclc_node_init_default(&node, "robot_motion_control", "", &support);
 
     // 初始化执行器
-    unsigned int number_handles = 1;
+    unsigned int number_handles = 2;
     rclc_executor_init(&executor, &support.context, number_handles, &allocator);
+
+    odom_msg.header.frame_id=micro_ros_string_utilities_set(odom_msg.header.frame_id,"odom");
+    odom_msg.child_frame_id=micro_ros_string_utilities_set(odom_msg.child_frame_id,"base_footprint");
+    rclc_publisher_init_best_effort(&odom_publisher,&node,ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs,msg,Odometry),
+                                    "/odom");
+    while(!rmw_uros_epoch_synchronized()){      // 没有同步
+        rmw_uros_sync_session(1000);    //尝试同步
+        delay(10);
+    }
+    rclc_timer_init_default(&timer,&support,RCL_MS_TO_NS(50),callback_publisher);
+    rclc_executor_add_timer(&executor,&timer);
 
     rclc_subscription_init_best_effort(&subcriber,
                                        &node,

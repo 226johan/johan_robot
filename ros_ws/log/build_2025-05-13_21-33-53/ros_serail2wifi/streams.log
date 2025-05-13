@@ -1,0 +1,37 @@
+[0.497s] Invoking command in '/home/johan/Dev/graduation_project/ros_ws/src/ros_serial2wifi': PYTHONPATH=/home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/ros_serail2wifi build --build-base /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build install --record /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/install.log --single-version-externally-managed install_data
+[0.651s] running egg_info
+[0.651s] creating ../../build/ros_serail2wifi/ros_serail2wifi.egg-info
+[0.651s] writing ../../build/ros_serail2wifi/ros_serail2wifi.egg-info/PKG-INFO
+[0.652s] writing dependency_links to ../../build/ros_serail2wifi/ros_serail2wifi.egg-info/dependency_links.txt
+[0.652s] writing entry points to ../../build/ros_serail2wifi/ros_serail2wifi.egg-info/entry_points.txt
+[0.652s] writing requirements to ../../build/ros_serail2wifi/ros_serail2wifi.egg-info/requires.txt
+[0.652s] writing top-level names to ../../build/ros_serail2wifi/ros_serail2wifi.egg-info/top_level.txt
+[0.652s] writing manifest file '../../build/ros_serail2wifi/ros_serail2wifi.egg-info/SOURCES.txt'
+[0.653s] reading manifest file '../../build/ros_serail2wifi/ros_serail2wifi.egg-info/SOURCES.txt'
+[0.653s] writing manifest file '../../build/ros_serail2wifi/ros_serail2wifi.egg-info/SOURCES.txt'
+[0.653s] running build
+[0.653s] running build_py
+[0.654s] creating /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build
+[0.654s] creating /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib
+[0.654s] creating /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib/ros_serail2wifi
+[0.654s] copying ros_serail2wifi/tcpserver.py -> /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib/ros_serail2wifi
+[0.654s] copying ros_serail2wifi/__init__.py -> /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib/ros_serail2wifi
+[0.654s] running install
+[0.654s] running install_lib
+[0.654s] creating /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi
+[0.654s] copying /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib/ros_serail2wifi/tcpserver.py -> /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi
+[0.655s] copying /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build/lib/ros_serail2wifi/__init__.py -> /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi
+[0.655s] byte-compiling /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi/tcpserver.py to tcpserver.cpython-310.pyc
+[0.655s] byte-compiling /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi/__init__.py to __init__.cpython-310.pyc
+[0.655s] running install_data
+[0.655s] creating /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/share/ament_index
+[0.656s] creating /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/share/ament_index/resource_index
+[0.656s] creating /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/share/ament_index/resource_index/packages
+[0.656s] copying resource/ros_serail2wifi -> /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/share/ament_index/resource_index/packages
+[0.656s] copying package.xml -> /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/share/ros_serail2wifi
+[0.656s] running install_egg_info
+[0.657s] Copying ../../build/ros_serail2wifi/ros_serail2wifi.egg-info to /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages/ros_serail2wifi-0.0.0-py3.10.egg-info
+[0.657s] running install_scripts
+[0.671s] Installing tcp_server script to /home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/ros_serail2wifi
+[0.671s] writing list of installed files to '/home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/install.log'
+[0.685s] Invoked command in '/home/johan/Dev/graduation_project/ros_ws/src/ros_serial2wifi' returned '0': PYTHONPATH=/home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/johan/Dev/graduation_project/ros_ws/install/ros_serail2wifi/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/ros_serail2wifi build --build-base /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/build install --record /home/johan/Dev/graduation_project/ros_ws/build/ros_serail2wifi/install.log --single-version-externally-managed install_data

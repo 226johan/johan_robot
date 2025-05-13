@@ -17,6 +17,7 @@
         "unordered_set": "cpp",
         "regex": "cpp",
         "bitset": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "ratio": "cpp"
     }
 }
